@@ -13,6 +13,13 @@ router.get('/', pagamentoController.getAll);
 
 
 /**
+ * @route   GET /pagamentos/usuario
+ * @desc    Buscar pagamentos de um usuario
+ * @access  Public
+ */
+router.get('/usuario', pagamentoController.getByUsurioId);
+
+/**
  * @route   GET /pagamentos/:id
  * @desc    Buscar pagamento por ID
  * @access  Public
@@ -39,5 +46,6 @@ router.put('/:id', pagamentoController.update);
  * @access  Public
  */
 router.delete('/:id', pagamentoController.delete);
+
 
 export default router;

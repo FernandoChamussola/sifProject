@@ -134,7 +134,30 @@ class UsuarioController {
       });
     }
   }
+  
+  async getUsuarioWithPagamentos(req, res) {
+    try {
+      const  id  = req.user.userId;
+      const usuario = await usuarioService.getUsuarioWithPagamentos(parseInt(id));
+      
+      console.log(chalk.green(`✅ Usuario encontrado com seus pagamentos - ID: ${id}`));
+      
+      res.json({
+        success: true,
+        data: usuario
+      });
 
+    } catch (error) {
+      console.error(chalk.red(`❌ Erro ao buscar usuario com seus pagamentos:`), error.message);
+      
+      const statusCode = error.message.includes('não encontrado') ? 404 : 500;
+      
+      res.status(statusCode).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
   
 }
 

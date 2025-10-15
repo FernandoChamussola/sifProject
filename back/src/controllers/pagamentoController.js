@@ -56,15 +56,46 @@ class PagamentoController {
     }
   }
 
+  async getByUsurioId(req, res) {
+    try {
+      const { id } = req.query;
+      const options = {
+        page: req.query.page,
+        limit: req.query.limit,
+        orderBy: req.query.orderBy,
+        order: req.query.order
+      };
+      const result = await pagamentoService.getByUsuarioId(parseInt(id), options);
+      
+      console.log(chalk.green(`✅ Listagem de pagamentos do usuario solicitada - Usuario ID: ${id}, Total: ${result.pagination.total}`));
+      
+      res.json({
+        success: true,
+        ...result
+      });
+
+    } catch (error) {
+      console.error(chalk.red(`❌ Erro ao listar pagamentos do usuario:`), error.message);
+      
+      res.status(500).json({
+        success: false,
+        message: 'Erro interno do servidor',
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
   async create(req, res) {
     try {
       const pagamento = await pagamentoService.create(req.body);
+      const recibo = await pagamentoService.generateReceiptData(pagamento);
       
       console.log(chalk.green(`✅ Pagamento criado com sucesso - ID: ${pagamento.id}`));
       
       res.status(201).json({
         success: true,
         data: pagamento,
+        recibo: recibo,
         message: 'Pagamento criado com sucesso'
       });
 
@@ -115,6 +146,7 @@ class PagamentoController {
     try {
       const { id } = req.params;
       const result = await pagamentoService.delete(parseInt(id));
+
       
       console.log(chalk.green(`✅ Pagamento deletado com sucesso - ID: ${id}`));
       

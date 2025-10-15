@@ -109,6 +109,22 @@ class UsuarioService {
     return { message: 'Usuario deletado com sucesso' };
   }
 
+  //retorna o usuario seus pagemtos feitos as taxas associadas
+  async getUsuarioWithPagamentos(id) {
+    const usuario = await prisma.usuario.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        pagamentos: {
+          include: {
+            taxa: true // Inclui os detalhes da taxa associada a cada pagamento
+          }
+        }
+      }
+    });
+
+    return usuario;
+  }
+
 
 }
 

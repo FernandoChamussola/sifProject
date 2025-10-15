@@ -29,6 +29,10 @@ class AuthService {
       throw new Error('Campo perfil é obrigatório');
     }
 
+    if(!data.morada){
+      throw new Error('Campo morada é obrigatório');
+    }
+
     const existingUser = await prisma.usuario.findUnique({
       where: { email: data.email }
     });
@@ -38,7 +42,7 @@ class AuthService {
     }
      
    // console.log("111111111111111111111111111111111111111")
-    const hashedPassword = await bcrypt.hash(data.senha, 10);
+    const hashedPassword = await bcrypt.hash(data.senhaHash, 10);
 
     const user = await prisma.usuario.create({
       data: {
@@ -46,7 +50,8 @@ class AuthService {
         email: data.email,
         senhaHash: hashedPassword,
         telefone: data.telefone,
-        perfil: data.perfil
+        perfil: data.perfil,
+        morada: data.morada
       }
 
     });

@@ -40,4 +40,11 @@ router.put('/:id', usuarioController.update);
  */
 router.delete('/:id', usuarioController.delete);
 
+/**
+ * @route   GET /usuarios/:id/pagamentos
+ * @desc    Buscar usuario com seus pagamentos
+ * @access  Public
+ */
+router.get('/:id/pagamentos', usuarioController.getUsuarioWithPagamentos);
+
 export default router;
