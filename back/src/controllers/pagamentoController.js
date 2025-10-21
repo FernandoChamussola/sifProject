@@ -1,5 +1,7 @@
 import pagamentoService from '../services/pagamentoService.js';
 import chalk from 'chalk';
+import pay from '../services/mpesa.js';
+import { Client } from '@paymentsds/mpesa'
 
 class PagamentoController {
 
@@ -91,6 +93,20 @@ class PagamentoController {
       const recibo = await pagamentoService.generateReceiptData(pagamento);
       
       console.log(chalk.green(`✅ Pagamento criado com sucesso - ID: ${pagamento.id}`));
+
+      const { valorPago } = req.body;
+      const telefone = pagamento.usuario.telefone;
+      //o numero tem +258 no inicio, temos que remover
+      const telefoneFormatado = telefone.replace('+258', '');
+
+      const resultMpesa = await pay(telefoneFormatado, valorPago);
+      if(resultMpesa !== 201){
+        return res.status(500).json({
+          success: false,
+          message: 'Erro ao processar pagamento',
+          error: 'Erro ao processar pagamento'
+        });
+      }
       
       res.status(201).json({
         success: true,
