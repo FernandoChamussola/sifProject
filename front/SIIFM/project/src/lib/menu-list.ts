@@ -33,10 +33,28 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: "",
       menus: [
         {
-          href: "/dashboard",
+          href: "/dashboard/dashboard",
           label: "Dashboard",
           icon: LayoutGrid,
-          submenus: []
+          submenus: [
+
+             {
+              href: "/dashboard2",
+              label: "dashboard"
+            },
+              {
+              href: "/taxa",
+              label: "taxas"
+            },  {
+              href: "/usuarios",
+              label: "usuarios"
+            },
+            {
+              href: "/relatorio",
+              label: "relatorios"
+            },
+    
+          ]
         }
       ]
     },
@@ -45,39 +63,39 @@ export function getMenuList(pathname: string): Group[] {
       menus: [
         {
           href: "",
-          label: "Posts",
+          label: "Pagamento",
           icon: SquarePen,
           submenus: [
             {
-              href: "/posts",
-              label: "All Posts"
+              href: "/pagamento",
+              label: "Pagamento"
             },
             {
-              href: "/posts/new",
-              label: "New Post"
+              href: "/pagamentos",
+              label: "historicos"
             }
           ]
         },
-        {
-          href: "/categories",
-          label: "Categories",
-          icon: Bookmark
-        },
-        {
-          href: "/tags",
-          label: "Tags",
-          icon: Tag
-        }
+        // {
+        //   href: "/categories",
+        //   label: "Categories",
+        //   icon: Bookmark
+        // },
+        // {
+        //   href: "/tags",
+        //   label: "Tags",
+        //   icon: Tag
+        // }
       ]
     },
     {
       groupLabel: "Settings",
       menus: [
-        {
-          href: "/users",
-          label: "Users",
-          icon: Users
-        },
+        // {
+        //   // href: "/usuarios",
+        //   // label: "Users",
+        //   // icon: Users
+        // },
         {
           href: "/account",
           label: "Account",
