@@ -1,4 +1,4 @@
-// File: G:\New folder\projectoSIF\sifProject\front\SIIFM\project\src\app\(demo)\layout.tsx
+// File: D:\programacao\sifProject\front\SIIFM\project\src\app\(demo)\layout.tsx
 import * as entry from '../../../../src/app/(demo)/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
