@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import api from "@/lib/api"; // importa a instância do Axios
 
 interface LoginFormProps {
   onLoginSuccess: (data: any) => void; // callback para enviar token e userData ao pai
@@ -28,22 +29,17 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
     setError(null);
 
     try {
-      const res = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const { data } = await api.post("/auth/login", formData); // usando Axios
 
-      if (!res.ok) {
-        const text = await res.text(); // captura HTML de erro se não for JSON
-        throw new Error(text || "Erro no login");
-      }
-
-      const data = await res.json();
       // envia token e userData para o componente pai
       onLoginSuccess(data);
     } catch (err: any) {
-      setError(err.message || "Erro ao logar");
+      // Axios coloca a resposta de erro em err.response
+      if (err.response && err.response.data) {
+        setError(err.response.data.message || "Erro no login");
+      } else {
+        setError(err.message || "Erro ao logar");
+      }
     } finally {
       setLoading(false);
     }
@@ -83,4 +79,3 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
     </form>
   );
 }
-
