@@ -29,12 +29,11 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
     setError(null);
 
     try {
-      const { data } = await api.post("/auth/login", formData); // usando Axios
-
-      // envia token e userData para o componente pai
+      const { data } = await api.post("/auth/login", formData); 
+      
       onLoginSuccess(data);
     } catch (err: any) {
-      // Axios coloca a resposta de erro em err.response
+      
       if (err.response && err.response.data) {
         setError(err.response.data.message || "Erro no login");
       } else {

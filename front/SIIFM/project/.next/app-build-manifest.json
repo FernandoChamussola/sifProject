@@ -1,14 +1,9 @@
 {
   "pages": {
-    "/(demo)/usuarios/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(demo)/usuarios/page.js"
-    ],
-    "/(demo)/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(demo)/layout.js"
+      "static/chunks/app/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -16,10 +11,40 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/_not-found/page": [
+    "/(demo)/dashboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+      "static/chunks/app/(demo)/dashboard/page.js"
+    ],
+    "/(demo)/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(demo)/layout.js"
+    ],
+    "/(demo)/pagamento/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(demo)/pagamento/page.js"
+    ],
+    "/(demo)/pagamentos/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(demo)/pagamentos/page.js"
+    ],
+    "/(demo)/taxa/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(demo)/taxa/page.js"
+    ],
+    "/(demo)/usuarios/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(demo)/usuarios/page.js"
+    ],
+    "/(demo)/relatorio/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(demo)/relatorio/page.js"
     ]
   }
 }

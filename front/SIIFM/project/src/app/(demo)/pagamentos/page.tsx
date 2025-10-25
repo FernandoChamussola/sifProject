@@ -1,12 +1,161 @@
-// "use client"
+// // "use client"
+// // "use client";
+
+// // import { useState, useEffect } from "react";
+// // import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// // import { Button } from "@/components/ui/button";
+// // import { FileCheck, Clock, CreditCard, CheckCircle, XCircle, Wallet } from "lucide-react";
+// // import { ContentLayout } from "@/components/admin-panel/content-layout";
+
+
+// // interface Pagamento {
+// //   id: number;
+// //   taxaNome: string;
+// //   valor: number;
+// //   metodo: string;
+// //   data: string;
+// //   status: "CONCLUIDO" | "PENDENTE" | "FALHOU";
+// //   reciboPdfUrl?: string;
+// // }
+
+// // export default function HistoricoPagamento() {
+// //   const [pagamentos, setPagamentos] = useState<Pagamento[]>([]);
+
+// //   // dados mockados
+// //   useEffect(() => {
+// //     const mock: Pagamento[] = [
+// //       {
+// //         id: 1,
+// //         taxaNome: "Licença A",
+// //         valor: 100,
+// //         metodo: "E-MOLA",
+// //         data: "2025-10-01",
+// //         status: "CONCLUIDO",
+// //         reciboPdfUrl: "https://example.com/recibo1.pdf",
+// //       },
+// //       {
+// //         id: 2,
+// //         taxaNome: "Licença B",
+// //         valor: 200,
+// //         metodo: "M-PESA",
+// //         data: "2025-09-28",
+// //         status: "PENDENTE",
+// //       },
+// //       {
+// //         id: 3,
+// //         taxaNome: "Licença C",
+// //         valor: 300,
+// //         metodo: "CASH",
+// //         data: "2025-09-20",
+// //         status: "FALHOU",
+// //       },
+// //       {
+// //         id: 4,
+// //         taxaNome: "Licença A",
+// //         valor: 100,
+// //         metodo: "E-MOLA",
+// //         data: "2025-08-15",
+// //         status: "CONCLUIDO",
+// //         reciboPdfUrl: "https://example.com/recibo2.pdf",
+// //       },
+// //     ];
+// //     setPagamentos(mock);
+// //   }, []);
+
+// //   // GET: buscar histórico do usuário
+// //   useEffect(() => {
+// //     async function fetchHistorico() {
+// //       try {
+// //         const res = await fetch("/api/pagamentos/usuario"); // retorna histórico do usuário
+// //         const data: Pagamento[] = await res.json();
+// //         setPagamentos(data);
+// //       } catch (err) {
+// //         console.error("Erro ao buscar histórico", err);
+// //       }
+// //     }
+// //     fetchHistorico();
+// //   }, []);
+
+// //   return (
+
+// //     <ContentLayout title="Histórico de Pagamentos">
+// //     <div className="min-h-screen flex flex-col items-center p-6 bg-gray-50 dark:bg-gray-900">
+      
+// //       <Card className="w-full max-w-5xl shadow-2xl rounded-3xl border border-indigo-200 dark:border-indigo-700 bg-white dark:bg-gray-800 p-6 md:p-10">
+// //         <CardHeader className="mb-6">
+// //           <CardTitle className="text-2xl font-bold flex items-center gap-3 text-indigo-600 dark:text-indigo-400">
+// //             <CreditCard size={26} /> Pagamentos Recentes
+// //           </CardTitle>
+// //         </CardHeader>
+
+// //         <CardContent className="space-y-4">
+// //           {pagamentos.length === 0 && (
+// //             <p className="text-gray-700 dark:text-gray-200 text-center">
+// //               Nenhum pagamento encontrado.
+// //             </p>
+// //           )}
+
+// //           {pagamentos.map((p) => (
+// //             <div
+// //               key={p.id}
+// //               className="flex flex-col md:flex-row md:justify-between items-start md:items-center bg-indigo-50 dark:bg-indigo-900 rounded-xl p-4 md:p-6 shadow-md border border-indigo-200 dark:border-indigo-700"
+// //             >
+// //               <div className="space-y-1">
+// //                 <p className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
+// //                   <Wallet size={16} /> {p.taxaNome}
+// //                 </p>
+// //                 <p className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
+// //                   <Clock size={16} /> {p.data}
+// //                 </p>
+// //                 <p className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
+// //                   <CreditCard size={16} /> {p.metodo}
+// //                 </p>
+// //                 <p className="text-gray-800 dark:text-gray-100 font-semibold">
+// //                   {p.valor.toLocaleString()} MZN
+// //                 </p>
+// //               </div>
+
+// //               <div className="flex flex-col md:flex-row md:items-center gap-4 mt-4 md:mt-0">
+// //                 <div className="flex items-center gap-1">
+// //                   {p.status === "CONCLUIDO" && <CheckCircle className="text-green-600" />}
+// //                   {p.status === "PENDENTE" && <Clock className="text-yellow-500" />}
+// //                   {p.status === "FALHOU" && <XCircle className="text-red-600" />}
+// //                   <span className="text-gray-800 dark:text-gray-100 font-semibold">{p.status}</span>
+// //                 </div>
+
+// //                 {p.reciboPdfUrl && (
+// //                   <a href={p.reciboPdfUrl} target="_blank" rel="noreferrer">
+// //                     <Button className="bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 flex items-center gap-2">
+// //                       <FileCheck size={16} /> Abrir Recibo
+// //                     </Button>
+// //                   </a>
+// //                 )}
+// //               </div>
+// //             </div>
+// //           ))}
+// //         </CardContent>
+// //       </Card>
+// //     </div>
+// //     </ContentLayout>
+// //   );
+// // }
+
+
 // "use client";
 
 // import { useState, useEffect } from "react";
 // import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 // import { Button } from "@/components/ui/button";
-// import { FileCheck, Clock, CreditCard, CheckCircle, XCircle, Wallet } from "lucide-react";
+// import {
+//   FileCheck,
+//   Clock,
+//   CreditCard,
+//   CheckCircle,
+//   XCircle,
+//   Wallet,
+//   Users,
+// } from "lucide-react";
 // import { ContentLayout } from "@/components/admin-panel/content-layout";
-
 
 // interface Pagamento {
 //   id: number;
@@ -15,127 +164,179 @@
 //   metodo: string;
 //   data: string;
 //   status: "CONCLUIDO" | "PENDENTE" | "FALHOU";
+//   usuarioNome?: string; // usado apenas se for admin
 //   reciboPdfUrl?: string;
+// }
+
+// interface User {
+//   id: number;
+//   perfil: "admin" | "usuario";
 // }
 
 // export default function HistoricoPagamento() {
 //   const [pagamentos, setPagamentos] = useState<Pagamento[]>([]);
+//   const [loading, setLoading] = useState(true);
+//   const [erro, setErro] = useState<string | null>(null);
+//   const [pagina, setPagina] = useState(1);
+//   const [totalPaginas, setTotalPaginas] = useState(1);
 
-//   // dados mockados
+//   // Busca perfil e id do usuário logado
 //   useEffect(() => {
-//     const mock: Pagamento[] = [
-//       {
-//         id: 1,
-//         taxaNome: "Licença A",
-//         valor: 100,
-//         metodo: "E-MOLA",
-//         data: "2025-10-01",
-//         status: "CONCLUIDO",
-//         reciboPdfUrl: "https://example.com/recibo1.pdf",
-//       },
-//       {
-//         id: 2,
-//         taxaNome: "Licença B",
-//         valor: 200,
-//         metodo: "M-PESA",
-//         data: "2025-09-28",
-//         status: "PENDENTE",
-//       },
-//       {
-//         id: 3,
-//         taxaNome: "Licença C",
-//         valor: 300,
-//         metodo: "CASH",
-//         data: "2025-09-20",
-//         status: "FALHOU",
-//       },
-//       {
-//         id: 4,
-//         taxaNome: "Licença A",
-//         valor: 100,
-//         metodo: "E-MOLA",
-//         data: "2025-08-15",
-//         status: "CONCLUIDO",
-//         reciboPdfUrl: "https://example.com/recibo2.pdf",
-//       },
-//     ];
-//     setPagamentos(mock);
-//   }, []);
-
-//   // GET: buscar histórico do usuário
-//   useEffect(() => {
-//     async function fetchHistorico() {
+//     async function fetchPagamentos() {
 //       try {
-//         const res = await fetch("/api/pagamentos/usuario"); // retorna histórico do usuário
-//         const data: Pagamento[] = await res.json();
-//         setPagamentos(data);
-//       } catch (err) {
-//         console.error("Erro ao buscar histórico", err);
+//         setLoading(true);
+
+//         // 1️⃣ Obter dados do usuário logado
+//         const token = localStorage.getItem("token");
+//         const userRes = await fetch("http://localhost:3000/api/auth/me", {
+//           headers: { Authorization: `Bearer ${token}` },
+//         });
+
+//         if (!userRes.ok) throw new Error("Falha ao buscar usuário logado");
+//         const user: User = await userRes.json();
+
+//         // 2️⃣ Definir endpoint correto
+//         let url = "";
+//         if (user.perfil === "admin") {
+//           url = `http://localhost:3000/api/pagamentos?page=${pagina}`;
+//         } else {
+//           url = `http://localhost:3000/api/usuarios/${user.id}/pagamentos`;
+//         }
+
+//         // 3️⃣ Fazer o fetch dos pagamentos
+//         const res = await fetch(url, {
+//           headers: { Authorization: `Bearer ${token}` },
+//         });
+
+//         if (!res.ok) throw new Error("Erro ao buscar pagamentos");
+
+//         const data = await res.json();
+
+//         // Se for admin, a resposta pode vir paginada (ex: { data: [], totalPages: n })
+//         if (user.perfil === "admin" && data.data) {
+//           setPagamentos(data.data);
+//           setTotalPaginas(data.totalPages || 1);
+//         } else {
+//           setPagamentos(data);
+//           setTotalPaginas(1);
+//         }
+//       } catch (err: any) {
+//         console.error("Erro ao buscar histórico:", err);
+//         setErro("Não foi possível carregar os pagamentos.");
+//       } finally {
+//         setLoading(false);
 //       }
 //     }
-//     fetchHistorico();
-//   }, []);
+
+//     fetchPagamentos();
+//   }, [pagina]);
 
 //   return (
-
 //     <ContentLayout title="Histórico de Pagamentos">
-//     <div className="min-h-screen flex flex-col items-center p-6 bg-gray-50 dark:bg-gray-900">
-      
-//       <Card className="w-full max-w-5xl shadow-2xl rounded-3xl border border-indigo-200 dark:border-indigo-700 bg-white dark:bg-gray-800 p-6 md:p-10">
-//         <CardHeader className="mb-6">
-//           <CardTitle className="text-2xl font-bold flex items-center gap-3 text-indigo-600 dark:text-indigo-400">
-//             <CreditCard size={26} /> Pagamentos Recentes
-//           </CardTitle>
-//         </CardHeader>
+//       <div className="min-h-screen flex flex-col items-center p-6 bg-gray-50 dark:bg-gray-900">
+//         <Card className="w-full max-w-5xl shadow-2xl rounded-3xl border border-indigo-200 dark:border-indigo-700 bg-white dark:bg-gray-800 p-6 md:p-10">
+//           <CardHeader className="mb-6">
+//             <CardTitle className="text-2xl font-bold flex items-center gap-3 text-indigo-600 dark:text-indigo-400">
+//               <CreditCard size={26} /> Pagamentos Recentes
+//             </CardTitle>
+//           </CardHeader>
 
-//         <CardContent className="space-y-4">
-//           {pagamentos.length === 0 && (
-//             <p className="text-gray-700 dark:text-gray-200 text-center">
-//               Nenhum pagamento encontrado.
-//             </p>
-//           )}
+//           <CardContent className="space-y-4">
+//             {loading && (
+//               <p className="text-gray-700 dark:text-gray-200 text-center">
+//                 Carregando pagamentos...
+//               </p>
+//             )}
 
-//           {pagamentos.map((p) => (
-//             <div
-//               key={p.id}
-//               className="flex flex-col md:flex-row md:justify-between items-start md:items-center bg-indigo-50 dark:bg-indigo-900 rounded-xl p-4 md:p-6 shadow-md border border-indigo-200 dark:border-indigo-700"
-//             >
-//               <div className="space-y-1">
-//                 <p className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
-//                   <Wallet size={16} /> {p.taxaNome}
-//                 </p>
-//                 <p className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
-//                   <Clock size={16} /> {p.data}
-//                 </p>
-//                 <p className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
-//                   <CreditCard size={16} /> {p.metodo}
-//                 </p>
-//                 <p className="text-gray-800 dark:text-gray-100 font-semibold">
-//                   {p.valor.toLocaleString()} MZN
-//                 </p>
-//               </div>
+//             {erro && (
+//               <p className="text-red-600 dark:text-red-400 text-center">{erro}</p>
+//             )}
 
-//               <div className="flex flex-col md:flex-row md:items-center gap-4 mt-4 md:mt-0">
-//                 <div className="flex items-center gap-1">
-//                   {p.status === "CONCLUIDO" && <CheckCircle className="text-green-600" />}
-//                   {p.status === "PENDENTE" && <Clock className="text-yellow-500" />}
-//                   {p.status === "FALHOU" && <XCircle className="text-red-600" />}
-//                   <span className="text-gray-800 dark:text-gray-100 font-semibold">{p.status}</span>
+//             {!loading && pagamentos.length === 0 && !erro && (
+//               <p className="text-gray-700 dark:text-gray-200 text-center">
+//                 Nenhum pagamento encontrado.
+//               </p>
+//             )}
+
+//             {pagamentos.map((p) => (
+//               <div
+//                 key={p.id}
+//                 className="flex flex-col md:flex-row md:justify-between items-start md:items-center bg-indigo-50 dark:bg-indigo-900 rounded-xl p-4 md:p-6 shadow-md border border-indigo-200 dark:border-indigo-700"
+//               >
+//                 <div className="space-y-1">
+//                   <p className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
+//                     <Wallet size={16} /> {p.taxaNome}
+//                   </p>
+//                   <p className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
+//                     <Clock size={16} /> {p.data}
+//                   </p>
+//                   <p className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
+//                     <CreditCard size={16} /> {p.metodo}
+//                   </p>
+//                   <p className="text-gray-800 dark:text-gray-100 font-semibold">
+//                     {p.valor.toLocaleString()} MZN
+//                   </p>
+
+//                   {/* mostra nome do usuário só se for admin */}
+//                   {p.usuarioNome && (
+//                     <p className="flex items-center gap-2 text-indigo-600 dark:text-indigo-300 font-medium">
+//                       <Users size={16} /> {p.usuarioNome}
+//                     </p>
+//                   )}
 //                 </div>
 
-//                 {p.reciboPdfUrl && (
-//                   <a href={p.reciboPdfUrl} target="_blank" rel="noreferrer">
-//                     <Button className="bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 flex items-center gap-2">
-//                       <FileCheck size={16} /> Abrir Recibo
-//                     </Button>
-//                   </a>
-//                 )}
+//                 <div className="flex flex-col md:flex-row md:items-center gap-4 mt-4 md:mt-0">
+//                   <div className="flex items-center gap-1">
+//                     {p.status === "CONCLUIDO" && (
+//                       <CheckCircle className="text-green-600" />
+//                     )}
+//                     {p.status === "PENDENTE" && (
+//                       <Clock className="text-yellow-500" />
+//                     )}
+//                     {p.status === "FALHOU" && (
+//                       <XCircle className="text-red-600" />
+//                     )}
+//                     <span className="text-gray-800 dark:text-gray-100 font-semibold">
+//                       {p.status}
+//                     </span>
+//                   </div>
+
+//                   {p.reciboPdfUrl && (
+//                     <a href={p.reciboPdfUrl} target="_blank" rel="noreferrer">
+//                       <Button className="bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 flex items-center gap-2">
+//                         <FileCheck size={16} /> Abrir Recibo
+//                       </Button>
+//                     </a>
+//                   )}
+//                 </div>
 //               </div>
-//             </div>
-//           ))}
-//         </CardContent>
-//       </Card>
-//     </div>
+//             ))}
+
+//             {/* paginação (só aparece se for admin e houver mais páginas) */}
+//             {totalPaginas > 1 && (
+//               <div className="flex justify-center gap-4 mt-6">
+//                 <Button
+//                   disabled={pagina <= 1}
+//                   onClick={() => setPagina(pagina - 1)}
+//                   variant="outline"
+//                 >
+//                   Anterior
+//                 </Button>
+//                 <span className="text-gray-700 dark:text-gray-200">
+//                   Página {pagina} de {totalPaginas}
+//                 </span>
+//                 <Button
+//                   disabled={pagina >= totalPaginas}
+//                   onClick={() => setPagina(pagina + 1)}
+//                   variant="outline"
+//                 >
+//                   Próxima
+//                 </Button>
+//               </div>
+//             )}
+//           </CardContent>
+//         </Card>
+//       </div>
 //     </ContentLayout>
 //   );
 // }
@@ -156,6 +357,7 @@ import {
   Users,
 } from "lucide-react";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
+import api from "@/lib/api"; // instância Axios
 
 interface Pagamento {
   id: number;
@@ -180,39 +382,26 @@ export default function HistoricoPagamento() {
   const [pagina, setPagina] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
 
-  // Busca perfil e id do usuário logado
   useEffect(() => {
     async function fetchPagamentos() {
       try {
         setLoading(true);
+        setErro(null);
 
         // 1️⃣ Obter dados do usuário logado
-        const token = localStorage.getItem("token");
-        const userRes = await fetch("http://localhost:3000/api/auth/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!userRes.ok) throw new Error("Falha ao buscar usuário logado");
-        const user: User = await userRes.json();
+        const { data: user } = await api.get<User>("/auth/me");
 
         // 2️⃣ Definir endpoint correto
         let url = "";
         if (user.perfil === "admin") {
-          url = `http://localhost:3000/api/pagamentos?page=${pagina}`;
+          url = `/pagamentos?page=${pagina}`;
         } else {
-          url = `http://localhost:3000/api/usuarios/${user.id}/pagamentos`;
+          url = `/usuarios/${user.id}/pagamentos`;
         }
 
-        // 3️⃣ Fazer o fetch dos pagamentos
-        const res = await fetch(url, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        // 3️⃣ Buscar pagamentos
+        const { data } = await api.get(url);
 
-        if (!res.ok) throw new Error("Erro ao buscar pagamentos");
-
-        const data = await res.json();
-
-        // Se for admin, a resposta pode vir paginada (ex: { data: [], totalPages: n })
         if (user.perfil === "admin" && data.data) {
           setPagamentos(data.data);
           setTotalPaginas(data.totalPages || 1);
@@ -277,7 +466,6 @@ export default function HistoricoPagamento() {
                     {p.valor.toLocaleString()} MZN
                   </p>
 
-                  {/* mostra nome do usuário só se for admin */}
                   {p.usuarioNome && (
                     <p className="flex items-center gap-2 text-indigo-600 dark:text-indigo-300 font-medium">
                       <Users size={16} /> {p.usuarioNome}
@@ -287,15 +475,9 @@ export default function HistoricoPagamento() {
 
                 <div className="flex flex-col md:flex-row md:items-center gap-4 mt-4 md:mt-0">
                   <div className="flex items-center gap-1">
-                    {p.status === "CONCLUIDO" && (
-                      <CheckCircle className="text-green-600" />
-                    )}
-                    {p.status === "PENDENTE" && (
-                      <Clock className="text-yellow-500" />
-                    )}
-                    {p.status === "FALHOU" && (
-                      <XCircle className="text-red-600" />
-                    )}
+                    {p.status === "CONCLUIDO" && <CheckCircle className="text-green-600" />}
+                    {p.status === "PENDENTE" && <Clock className="text-yellow-500" />}
+                    {p.status === "FALHOU" && <XCircle className="text-red-600" />}
                     <span className="text-gray-800 dark:text-gray-100 font-semibold">
                       {p.status}
                     </span>
@@ -312,7 +494,6 @@ export default function HistoricoPagamento() {
               </div>
             ))}
 
-            {/* paginação (só aparece se for admin e houver mais páginas) */}
             {totalPaginas > 1 && (
               <div className="flex justify-center gap-4 mt-6">
                 <Button
