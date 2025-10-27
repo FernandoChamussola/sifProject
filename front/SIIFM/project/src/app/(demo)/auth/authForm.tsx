@@ -147,7 +147,7 @@ export function AuthPage() {
     if (token && user) {
       const parsedUser = JSON.parse(user);
       setUserData(parsedUser);
-      router.push("/pagamentos"); // ou "/dashboard" dependendo da página inicial
+      router.push("/dashboard"); // ou "/dashboard" dependendo da página inicial
     }
   }, [router]);
 
@@ -159,7 +159,7 @@ export function AuthPage() {
 
     alert(`Bem-vindo, ${data.userData.nome}!`);
 
-    router.push("/pagamentos"); // redireciona após login
+    router.push("/home"); // redireciona após login
   };
 
   // Callback quando registro é bem-sucedido

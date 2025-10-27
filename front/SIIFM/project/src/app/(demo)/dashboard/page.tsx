@@ -74,15 +74,15 @@ export default function DashboardAdmin() {
     setUsuario(decoded);
   }, []);
 
-  // // Redireciona ou oculta dashboard se não for admin
-  // if (!usuario) return <p>Carregando...</p>;
-  // if (usuario.perfil !== "ADMIN") {
-  //   return (
-  //     <ContentLayout title="Dashboard">
-  //       <p className="text-center mt-20">Acesso negado</p>
-  //     </ContentLayout>
-  //   );
-  // }
+  // Redireciona ou oculta dashboard se não for admin
+  if (!usuario) return <p>Carregando...</p>;
+  if (usuario.perfil !== "ADMIN") {
+    return (
+      <ContentLayout title="Dashboard">
+        <p className="text-center mt-20">Acesso negado</p>
+      </ContentLayout>
+    );
+  }
 
   // Fetch dashboard
   useEffect(() => {

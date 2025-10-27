@@ -3,20 +3,17 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import api from "@/lib/api"; // importa a instância do Axios
+import { AlertCircle } from "lucide-react";
+import api from "@/lib/api";
 
 interface LoginFormProps {
-  onLoginSuccess: (data: any) => void; // callback para enviar token e userData ao pai
+  onLoginSuccess: (data: any) => void;
 }
 
 export function LoginForm({ onLoginSuccess }: LoginFormProps) {
-  const [formData, setFormData] = useState({
-    email: "",
-    senha: "",
-  });
-
+  const [formData, setFormData] = useState({ email: "", senha: "" });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [erro, setErro] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,18 +23,16 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setErro(null);
 
     try {
-      const { data } = await api.post("/auth/login", formData); 
-      
+      const { data } = await api.post("/auth/login", formData);
       onLoginSuccess(data);
     } catch (err: any) {
-      
       if (err.response && err.response.data) {
-        setError(err.response.data.message || "Erro no login");
+        setErro(err.response.data.message || "Senha ou email incorrecto");
       } else {
-        setError(err.message || "Erro ao logar");
+        setErro(err.message || "Senha ou email incorrecto");
       }
     } finally {
       setLoading(false);
@@ -46,6 +41,12 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md">
+      {erro && (
+        <div className="flex items-center gap-2 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded">
+          <AlertCircle size={20} /> {erro}
+        </div>
+      )}
+
       <Input
         type="email"
         name="email"
@@ -53,7 +54,6 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
         value={formData.email}
         onChange={handleChange}
         required
-        className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
       <Input
@@ -63,16 +63,9 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
         value={formData.senha}
         onChange={handleChange}
         required
-        className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
-      {error && <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>}
-
-      <Button
-        type="submit"
-        disabled={loading}
-        className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md py-2 transition-all"
-      >
+      <Button type="submit" disabled={loading} className="mt-2 bg-blue-600 hover:bg-blue-700 text-white">
         {loading ? "Entrando..." : "Entrar"}
       </Button>
     </form>

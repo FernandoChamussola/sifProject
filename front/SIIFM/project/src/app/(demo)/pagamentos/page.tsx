@@ -1,6 +1,3 @@
-
-
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -91,8 +88,8 @@ export default function HistoricoPagamento() {
               p.status === "PAGO"
                 ? "CONCLUIDO"
                 : p.status === "PENDENTE"
-                ? "PENDENTE"
-                : "FALHOU",
+                  ? "PENDENTE"
+                  : "FALHOU",
             usuarioNome: p.usuario?.nome,
             reciboPdfUrl: p.reciboPdfUrl,
           }));
@@ -110,8 +107,8 @@ export default function HistoricoPagamento() {
               p.status === "PAGO"
                 ? "CONCLUIDO"
                 : p.status === "PENDENTE"
-                ? "PENDENTE"
-                : "FALHOU",
+                  ? "PENDENTE"
+                  : "FALHOU",
             usuarioNome: data.data.nome,
           }));
           setTotalPaginas(1);
@@ -132,7 +129,11 @@ export default function HistoricoPagamento() {
   return (
     <ContentLayout title="Histórico de Pagamentos">
       <div className="min-h-screen flex flex-col items-center p-6 bg-gray-50 dark:bg-gray-900">
-        <Card className="w-full max-w-5xl shadow-2xl rounded-3xl border border-indigo-200 dark:border-indigo-700 bg-white dark:bg-gray-800 p-6 md:p-10">
+        <Card className="w-full max-w-[90rem] mx-auto shadow-2xl rounded-3xl border border-indigo-200 dark:border-indigo-700 bg-white dark:bg-gray-800 p-8 md:p-16">
+          {/* Conteúdo do card aqui */}
+
+
+
           <CardHeader className="mb-6">
             <CardTitle className="text-2xl font-bold flex items-center gap-3 text-indigo-600 dark:text-indigo-400">
               <CreditCard size={26} /> Pagamentos Recentes
