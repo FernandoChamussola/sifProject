@@ -6,27 +6,12 @@
 // import { FileCheck, X } from "lucide-react";
 // import { Button } from "@/components/ui/button";
 // import { ContentLayout } from "@/components/admin-panel/content-layout";
+// import api from "@/lib/api";
 
-// // Função para extrair usuárioId do token JWT
-// function getUsuarioIdFromToken() {
-//   const token = localStorage.getItem("token");
-//   if (!token) return null;
-
-//   try {
-//     const payloadBase64 = token.split(".")[1];
-//     const payload = JSON.parse(atob(payloadBase64));
-//     return payload.userId; // conforme seu token
-//   } catch (err) {
-//     console.error("Erro ao ler token", err);
-//     return null;
-//   }
-// }
-
-// // Interface do pagamento retornado
 // interface PagamentoResponse {
 //   success: boolean;
 //   message: string;
-//   data: any; // dados do pagamento
+//   data: any;
 //   recibo: {
 //     reciboId: number;
 //     nomeUsuario: string;
@@ -41,9 +26,21 @@
 //     metodoPagamento: string;
 //     statusPagamento: string;
 //     dataPagamento: string;
-//     reciboPdfUrl:string;
-
+//     reciboPdfUrl: string;
 //   };
+// }
+
+// // Extrair ID do usuário do token
+// function getUsuarioIdFromToken() {
+//   const token = localStorage.getItem("token");
+//   if (!token) return null;
+//   try {
+//     const payloadBase64 = token.split(".")[1];
+//     const payload = JSON.parse(atob(payloadBase64));
+//     return payload.userId;
+//   } catch {
+//     return null;
+//   }
 // }
 
 // export default function PagamentoPage() {
@@ -51,27 +48,32 @@
 //   const [pagamentoData, setPagamentoData] = useState<PagamentoResponse | null>(null);
 //   const [modalAberto, setModalAberto] = useState(false);
 
-//   // Buscar taxas do backend
+//   // Buscar todas as taxas
 //   useEffect(() => {
-//     async function fetchTaxas() {
-//       try {
-//         const res = await fetch("/api/taxa");
-//         const data: Taxa[] = await res.json();
-//         setTaxas(data);
-//       } catch (err) {
-//         console.error("Erro ao buscar taxas", err);
-//       }
-//     }
-//     fetchTaxas();
-//   }, []);
+//   async function fetchTaxas() {
+//     try {
+//       const { data } = await api.get("/taxas");
+//       console.log("Taxas recebidas:", data);
 
-//   // Abrir modal quando pagamento é gerado
+//       if (data.success && Array.isArray(data.data)) {
+//         setTaxas(data.data); // ✅ usa o array correto
+//       } else {
+//         console.error("Formato inesperado da resposta:", data);
+//       }
+//     } catch (err) {
+//       console.error("Erro ao buscar taxas", err);
+//     }
+//   }
+//   fetchTaxas();
+// }, []);
+
+
+//   // Abrir modal ao gerar pagamento
 //   useEffect(() => {
 //     if (pagamentoData) setModalAberto(true);
 //   }, [pagamentoData]);
 
-//   // Função para processar pagamento
-//   const handlePagamento = async (pagamento: { taxaId: number; valorPago: number; metodo: string }) => {
+//   const handlePagamento = async (pagamento: { idTaxa: number; valor: number; metodo: string }) => {
 //     const usuarioId = getUsuarioIdFromToken();
 //     if (!usuarioId) {
 //       alert("Usuário não autenticado");
@@ -79,24 +81,16 @@
 //     }
 
 //     try {
-//       const res = await fetch("http://localhost:3000/api/pagamentos", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({
-//           usuarioId,
-//           taxaId: pagamento.taxaId,
-//           valorPago: pagamento.valorPago,
-//           metodo: pagamento.metodo,
-//           status: "PAGO",
-//         }),
+//       const { data } = await api.post<PagamentoResponse>("/pagamentos", {
+//         usuarioId,
+//         taxaId: pagamento.idTaxa,
+//         valorPago: pagamento.valor,
+//         metodo: pagamento.metodo,
+//         status: "PAGO",
 //       });
 
-//       const data: PagamentoResponse = await res.json();
-//       if (data.success) {
-//         setPagamentoData(data);
-//       } else {
-//         alert("Erro ao processar pagamento: " + data.message);
-//       }
+//       if (data.success) setPagamentoData(data);
+//       else alert("Erro ao processar pagamento: " + data.message);
 //     } catch (err) {
 //       console.error("Erro ao gerar pagamento", err);
 //       alert("Falha na conexão com o servidor");
@@ -106,18 +100,8 @@
 //   return (
 //     <ContentLayout title="Pagamentos">
 //       <div className="max-h-screen flex flex-col items-center justify-center p-6 bg-gray-50 dark:bg-gray-900 space-y-8">
-//         <PagamentoCard
-//           taxas={taxas}
-//           onPagamentoSelecionado={(pagamento) =>
-//             handlePagamento({
-//               taxaId: pagamento.idTaxa,
-//               valorPago: pagamento.valor,
-//               metodo: pagamento.metodo,
-//             })
-//           }
-//         />
+//         <PagamentoCard taxas={taxas} onPagamentoSelecionado={handlePagamento} />
 
-//         {/* Modal de confirmação */}
 //         <Dialog open={modalAberto} onOpenChange={setModalAberto}>
 //           <DialogContent className="max-w-lg rounded-3xl bg-white dark:bg-gray-800 p-8 relative">
 //             {pagamentoData && (
@@ -128,20 +112,12 @@
 //             )}
 
 //             <div className="flex justify-end gap-4 mt-6">
-//               <Button
-//                 variant="outline"
-//                 className="flex items-center gap-2"
-//                 onClick={() => setModalAberto(false)}
-//               >
+//               <Button variant="outline" className="flex items-center gap-2" onClick={() => setModalAberto(false)}>
 //                 <X size={16} /> Fechar
 //               </Button>
 
 //               {pagamentoData?.recibo && (
-//                 <a
-//                   href={pagamentoData.recibo.reciboPdfUrl}
-//                   target="_blank"
-//                   rel="noreferrer"
-//                 >
+//                 <a href={pagamentoData.recibo.reciboPdfUrl} target="_blank" rel="noreferrer">
 //                   <Button className="bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 flex items-center gap-2">
 //                     <FileCheck size={16} /> Abrir Recibo
 //                   </Button>
@@ -166,24 +142,8 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { FileCheck, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
-import api from "@/lib/api"; // instância Axios
+import api from "@/lib/api";
 
-// Função para extrair usuárioId do token JWT
-function getUsuarioIdFromToken() {
-  const token = localStorage.getItem("token");
-  if (!token) return null;
-
-  try {
-    const payloadBase64 = token.split(".")[1];
-    const payload = JSON.parse(atob(payloadBase64));
-    return payload.userId;
-  } catch (err) {
-    console.error("Erro ao ler token", err);
-    return null;
-  }
-}
-
-// Interface do pagamento retornado
 interface PagamentoResponse {
   success: boolean;
   message: string;
@@ -203,7 +163,21 @@ interface PagamentoResponse {
     statusPagamento: string;
     dataPagamento: string;
     reciboPdfUrl: string;
+    referenciaPagamento?: string; // opcional, caso backend gere
   };
+}
+
+// Extrair ID do usuário do token
+function getUsuarioIdFromToken() {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  try {
+    const payloadBase64 = token.split(".")[1];
+    const payload = JSON.parse(atob(payloadBase64));
+    return payload.userId;
+  } catch {
+    return null;
+  }
 }
 
 export default function PagamentoPage() {
@@ -211,12 +185,18 @@ export default function PagamentoPage() {
   const [pagamentoData, setPagamentoData] = useState<PagamentoResponse | null>(null);
   const [modalAberto, setModalAberto] = useState(false);
 
-  // Buscar taxas do backend
+  // Buscar todas as taxas
   useEffect(() => {
     async function fetchTaxas() {
       try {
-        const { data } = await api.get<Taxa[]>("/taxa");
-        setTaxas(data);
+        const { data } = await api.get("/taxas");
+        console.log("Taxas recebidas:", data);
+
+        if (data.success && Array.isArray(data.data)) {
+          setTaxas(data.data);
+        } else {
+          console.error("Formato inesperado da resposta:", data);
+        }
       } catch (err) {
         console.error("Erro ao buscar taxas", err);
       }
@@ -224,13 +204,12 @@ export default function PagamentoPage() {
     fetchTaxas();
   }, []);
 
-  // Abrir modal quando pagamento é gerado
+  // Abrir modal ao gerar pagamento
   useEffect(() => {
     if (pagamentoData) setModalAberto(true);
   }, [pagamentoData]);
 
-  // Função para processar pagamento
-  const handlePagamento = async (pagamento: { taxaId: number; valorPago: number; metodo: string }) => {
+  const handlePagamento = async (pagamento: { idTaxa: number; valor: number; metodo: string }) => {
     const usuarioId = getUsuarioIdFromToken();
     if (!usuarioId) {
       alert("Usuário não autenticado");
@@ -240,17 +219,14 @@ export default function PagamentoPage() {
     try {
       const { data } = await api.post<PagamentoResponse>("/pagamentos", {
         usuarioId,
-        taxaId: pagamento.taxaId,
-        valorPago: pagamento.valorPago,
+        taxaId: pagamento.idTaxa,
+        valorPago: pagamento.valor,
         metodo: pagamento.metodo,
-        status: "PAGO",
+        status: "PENDENTE", // ✅ Enviado como pendente
       });
 
-      if (data.success) {
-        setPagamentoData(data);
-      } else {
-        alert("Erro ao processar pagamento: " + data.message);
-      }
+      if (data.success) setPagamentoData(data);
+      else alert("Erro ao processar pagamento: " + data.message);
     } catch (err) {
       console.error("Erro ao gerar pagamento", err);
       alert("Falha na conexão com o servidor");
@@ -260,42 +236,27 @@ export default function PagamentoPage() {
   return (
     <ContentLayout title="Pagamentos">
       <div className="max-h-screen flex flex-col items-center justify-center p-6 bg-gray-50 dark:bg-gray-900 space-y-8">
-        <PagamentoCard
-          taxas={taxas}
-          onPagamentoSelecionado={(pagamento) =>
-            handlePagamento({
-              taxaId: pagamento.idTaxa,
-              valorPago: pagamento.valor,
-              metodo: pagamento.metodo,
-            })
-          }
-        />
+        <PagamentoCard taxas={taxas} onPagamentoSelecionado={handlePagamento} />
 
-        {/* Modal de confirmação */}
         <Dialog open={modalAberto} onOpenChange={setModalAberto}>
           <DialogContent className="max-w-lg rounded-3xl bg-white dark:bg-gray-800 p-8 relative">
             {pagamentoData && (
               <div className="space-y-3 mt-4 text-gray-800 dark:text-gray-100">
                 <p><span className="font-semibold">Status:</span> {pagamentoData.recibo.statusPagamento}</p>
                 <p><span className="font-semibold">Data:</span> {pagamentoData.recibo.dataPagamento}</p>
+                {pagamentoData.recibo.referenciaPagamento && (
+                  <p><span className="font-semibold">Referência:</span> {pagamentoData.recibo.referenciaPagamento}</p>
+                )}
               </div>
             )}
 
             <div className="flex justify-end gap-4 mt-6">
-              <Button
-                variant="outline"
-                className="flex items-center gap-2"
-                onClick={() => setModalAberto(false)}
-              >
+              <Button variant="outline" className="flex items-center gap-2" onClick={() => setModalAberto(false)}>
                 <X size={16} /> Fechar
               </Button>
 
-              {pagamentoData?.recibo && (
-                <a
-                  href={pagamentoData.recibo.reciboPdfUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+              {pagamentoData?.recibo?.statusPagamento === "PAGO" && (
+                <a href={pagamentoData.recibo.reciboPdfUrl} target="_blank" rel="noreferrer">
                   <Button className="bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 flex items-center gap-2">
                     <FileCheck size={16} /> Abrir Recibo
                   </Button>
