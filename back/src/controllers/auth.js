@@ -14,12 +14,13 @@ class AuthController {
     }
 
     async login(req, res) {
-       // console.log("Login request received");
+       console.log("Login request received");
         try {
             const { email, senha } = req.body;
             const user = await AuthService.login(email, senha);
             res.json(user);
         } catch (error) {
+            console.error("Login error:", error);
             res.status(401).json({ error: error.message });
         }
     }

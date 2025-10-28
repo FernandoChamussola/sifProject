@@ -13,6 +13,13 @@ router.get('/', taxaController.getAll);
 
 
 /**
+ * @route   GET /taxas/reativar/:id
+ * @desc    Reativar taxa por ID
+ * @access  Public
+ */
+router.get('/reativar/:id', taxaController.reactivate);
+
+/**
  * @route   GET /taxas/:id
  * @desc    Buscar taxa por ID
  * @access  Public

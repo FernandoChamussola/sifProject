@@ -94,13 +94,29 @@ class TaxaService {
     // Verificar se existe
     await this.getById(id);
 
-    await prisma.taxa.delete({
-      where: { id: parseInt(id) }
+    await prisma.taxa.update({
+      where: { id: parseInt(id) },
+      data: {
+        ativo: false
+      }
     });
 
-    return { message: 'Taxa deletado com sucesso' };
+    return { message: 'Taxa desativada com sucesso' };
   }
+  
+  async reactivate(id) {
+    // Verificar se existe
+    await this.getById(id);
 
+    await prisma.taxa.update({
+      where: { id: parseInt(id) },
+      data: {
+        ativo: true
+      }
+    });
+
+    return { message: 'Taxa reativada com sucesso' };
+  }
 
 }
 

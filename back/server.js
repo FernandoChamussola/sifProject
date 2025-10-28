@@ -4,7 +4,7 @@ import indexRoutes from './src/routes/index.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-
+//aceitar requisições de outras origens
 app.use(cors());
 app.use(express.json());
 

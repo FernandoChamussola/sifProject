@@ -135,6 +135,30 @@ class TaxaController {
     }
   }
 
+  async reactivate(req, res) {
+    try {
+      const { id } = req.params;
+      const result = await taxaService.reactivate(parseInt(id));
+      
+      console.log(chalk.green(`✅ Taxa reativada com sucesso - ID: ${id}`));
+      
+      res.json({
+        success: true,
+        message: result.message
+      });
+
+    } catch (error) {
+      console.error(chalk.red(`❌ Erro ao reativar taxa:`), error.message);
+      
+      const statusCode = error.message.includes('não encontrado') ? 404 : 500;
+      
+      res.status(statusCode).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
+
   
 }
 

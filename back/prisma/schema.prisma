@@ -28,6 +28,7 @@ model Taxa {
   nome          String       @db.VarChar(100)
   valor         Decimal      @db.Decimal(10,2)
   periodicidade String       @db.VarChar(20) // 'DIÁRIA', 'MENSAL', 'ANUAL'
+  ativo         Boolean?     @default(true)
   pagamentos    Pagamento[]
 }
 
