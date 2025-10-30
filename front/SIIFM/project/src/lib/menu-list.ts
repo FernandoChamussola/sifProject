@@ -84,86 +84,188 @@
 
 
 
- import {
+//  import {
+//   Tag,
+//   Users,
+//   Settings,
+//   Bookmark,
+//   SquarePen,
+//   LayoutGrid,
+//   LucideIcon
+// } from "lucide-react";
+// import { parseJwt } from "@/lib/jwt";
+
+// type Submenu = { href: string; label: string; active?: boolean; };
+// type Menu = { href: string; label: string; active?: boolean; icon: LucideIcon; submenus?: Submenu[]; };
+// type Group = { groupLabel: string; menus: Menu[]; };
+
+// // Função segura (evita erro quando localStorage não existe)
+// function getUserRole(): string | null {
+//   if (typeof window === "undefined") return null;
+//   const token = localStorage.getItem("token");
+//   if (!token) return null;
+//   try {
+//     const usuario = parseJwt(token);
+//     return usuario?.perfil ?? usuario?.role ?? null;
+//   } catch {
+//     return null;
+//   }
+// }
+
+// export function getMenuList(): Group[] {
+//   const role = getUserRole();
+//   const isAdmin = role?.toUpperCase() === "ADMIN";
+
+//   const groups: Group[] = [];
+
+//   // Grupo principal
+//   const mainMenus: Menu[] = [];
+
+//   // Só adiciona Dashboard se for admin
+//   if (isAdmin) {
+//     mainMenus.push({
+//       href: "/dashboard/dashboard",
+//       label: "Dashboard",
+//       icon: LayoutGrid,
+//       submenus: [
+//         { href: "/dashboard", label: "Dashboard" },
+//         { href: "/taxa", label: "Taxas" },
+//         { href: "/usuarios", label: "Usuários" },
+//         { href: "/relatorio", label: "Relatórios" },
+//       ],
+//     });
+//   }
+
+//   groups.push({ groupLabel: "", menus: mainMenus });
+
+//   groups.push({
+//     groupLabel: "Contents",
+//     menus: [
+//       {
+//         href: "",
+//         label: "Pagamento",
+//         icon: SquarePen,
+//         submenus: [
+//           { href: "/pagamento", label: "Pagamento" },
+//           { href: "/pagamentos", label: "Históricos" },
+//         ],
+//       },
+//     ],
+//   });
+
+//   groups.push({
+//     groupLabel: "Settings",
+//     menus: [
+//       {
+//         href: "/account",
+//         label: "Account",
+//         icon: Settings,
+//       },
+//     ],
+//   });
+
+//   return groups;
+// }
+
+import { useState, useEffect } from "react";
+import {
   Tag,
   Users,
   Settings,
-  Bookmark,
   SquarePen,
   LayoutGrid,
-  LucideIcon
+  LucideIcon,
 } from "lucide-react";
 import { parseJwt } from "@/lib/jwt";
 
-type Submenu = { href: string; label: string; active?: boolean; };
-type Menu = { href: string; label: string; active?: boolean; icon: LucideIcon; submenus?: Submenu[]; };
-type Group = { groupLabel: string; menus: Menu[]; };
+type Submenu = { href: string; label: string; active?: boolean };
+type Menu = { href: string; label: string; active?: boolean; icon: LucideIcon; submenus?: Submenu[] };
+type Group = { groupLabel: string; menus: Menu[] };
 
-// Função segura (evita erro quando localStorage não existe)
-function getUserRole(): string | null {
-  if (typeof window === "undefined") return null;
-  const token = localStorage.getItem("token");
-  if (!token) return null;
-  try {
-    const usuario = parseJwt(token);
-    return usuario?.perfil ?? usuario?.role ?? null;
-  } catch {
-    return null;
-  }
-}
+export function useMenuList() {
+  const [menuList, setMenuList] = useState<Group[]>([]);
 
-export function getMenuList(): Group[] {
-  const role = getUserRole();
-  const isAdmin = role?.toUpperCase() === "ADMIN";
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-  const groups: Group[] = [];
+    let role: string | null = null;
+    try {
+      const usuario = parseJwt(token);
+      role = usuario?.perfil?.toUpperCase() ?? null;
+    } catch {
+      role = null;
+    }
 
-  // Grupo principal
-  const mainMenus: Menu[] = [];
+    const isAdmin = role === "ADMIN";
+    const isComerciante = role === "COMERCIANTE";
 
-  // Só adiciona Dashboard se for admin
-  if (isAdmin) {
-    mainMenus.push({
-      href: "/dashboard/dashboard",
-      label: "Dashboard",
-      icon: LayoutGrid,
-      submenus: [
-        { href: "/dashboard", label: "Dashboard" },
-        { href: "/taxa", label: "Taxas" },
-        { href: "/usuarios", label: "Usuários" },
-        { href: "/relatorio", label: "Relatórios" },
+    const groups: Group[] = [];
+
+    // Dashboard só para admin
+    if (isAdmin) {
+      groups.push({
+        groupLabel: "",
+        menus: [
+          {
+            href: "/dashboard/dashboard",
+            label: "Dashboard",
+            icon: LayoutGrid,
+            submenus: [
+              { href: "/dashboard", label: "Dashboard" },
+              { href: "/taxa", label: "Taxas" },
+              { href: "/usuarios", label: "Usuários" },
+              { href: "/relatorio", label: "Relatórios" },
+            ],
+          },
+        ],
+      });
+    } else {
+      groups.push({ groupLabel: "", menus: [] });
+    }
+
+    // Conteúdos visíveis para todos
+    groups.push({
+      groupLabel: "Contents",
+      menus: [
+        {
+          href: "",
+          label: "Pagamento",
+          icon: SquarePen,
+          submenus: [
+            { href: "/pagamento", label: "Pagamento" },
+            { href: "/pagamentos", label: "Históricos" },
+          ],
+        },
       ],
     });
-  }
 
-  groups.push({ groupLabel: "", menus: mainMenus });
+    // Configurações
+    groups.push({
+      groupLabel: "Settings",
+      menus: [
+        {
+          href: "/account",
+          label: "Account",
+          icon: Settings,
+        },
+      ],
+    });
 
-  groups.push({
-    groupLabel: "Contents",
-    menus: [
-      {
-        href: "",
-        label: "Pagamento",
-        icon: SquarePen,
-        submenus: [
-          { href: "/pagamento", label: "Pagamento" },
-          { href: "/pagamentos", label: "Históricos" },
+    // Menus de comerciante
+    if (isComerciante) {
+      groups.push({
+        groupLabel: "Comerciante",
+        menus: [
+          { href: "/meus-produtos", label: "Meus Produtos", icon: Tag },
+          { href: "/clientes", label: "Clientes", icon: Users },
         ],
-      },
-    ],
-  });
+      });
+    }
 
-  groups.push({
-    groupLabel: "Settings",
-    menus: [
-      {
-        href: "/account",
-        label: "Account",
-        icon: Settings,
-      },
-    ],
-  });
+    setMenuList(groups);
+  }, []);
 
-  return groups;
+  return menuList;
 }
-

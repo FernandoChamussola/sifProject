@@ -286,6 +286,8 @@ import { ContentLayout } from "@/components/admin-panel/content-layout";
 import { Loader2, CheckCircle2, CreditCard, Calendar, RefreshCw, X } from "lucide-react";
 import { motion } from "framer-motion";
 import api from "@/lib/api";
+import { useToast } from "@/components/ui/Toast";
+
 
 interface Taxa {
   id: number;
@@ -331,6 +333,7 @@ function getUsuarioIdFromToken() {
 }
 
 export default function PagamentoPage() {
+  const { showToast } = useToast();
   const [taxas, setTaxas] = useState<Taxa[]>([]);
   const [taxaSelecionada, setTaxaSelecionada] = useState<Taxa | null>(null);
   const [metodoPagamento, setMetodoPagamento] = useState<string>("");
@@ -350,7 +353,8 @@ export default function PagamentoPage() {
         const { data } = await api.get("/taxas");
         if (data.success && Array.isArray(data.data)) setTaxas(data.data);
       } catch (err) {
-        console.error("Erro ao buscar taxas", err);
+        // console.error("Erro ao buscar taxas", err);
+        showToast("error", "Erro ao buscar taxas");
         setErroModal(true);
       }
     }
@@ -375,7 +379,7 @@ export default function PagamentoPage() {
     if (!taxaSelecionada || !metodoPagamento) return setErroModal(true);
     const usuarioId = getUsuarioIdFromToken();
     if (!usuarioId) return setErroModal(true);
-
+    showToast("warning", "processando pagamento!")
     setLoadingPagamento(true);
     setModalAberto(true);
 
@@ -390,12 +394,13 @@ export default function PagamentoPage() {
 
       setPagamentoData(data);
     } catch (err) {
-      console.error("Erro ao gerar pagamento", err);
+      showToast("error", "Erro ao gerar pagamento!")
       setErroModal(true);
     } finally {
       setLoadingPagamento(false);
+
       // Fecha automaticamente após 3 segundos
-      setTimeout(() => setModalAberto(false), 3000);
+      setTimeout(() => setModalAberto(false), 1000);
     }
   };
 
@@ -469,14 +474,16 @@ export default function PagamentoPage() {
             {loadingPagamento ? (
               <div className="flex flex-col items-center justify-center gap-4 text-gray-800 dark:text-gray-100">
                 <Loader2 className="animate-spin" size={40} />
+                
                 <p className="text-lg font-medium">Aguarde, processando pagamento...</p>
               </div>
             ) : (
               pagamentoData && (
                 <div className="space-y-3 text-gray-800 dark:text-gray-100">
-                  <p className="text-green-600 dark:text-green-400 font-semibold flex items-center gap-2">
+                   <p className="text-green-600 dark:text-green-400 font-semibold flex items-center gap-2">
                     <CheckCircle2 size={20} /> Pagamento realizado com sucesso!
-                  </p>
+                  </p> 
+                   
                   <p><span className="font-semibold">Status:</span> {pagamentoData.recibo.statusPagamento}</p>
                   <p><span className="font-semibold">Data:</span> {pagamentoData.recibo.dataPagamento}</p>
                   {pagamentoData.recibo.referenciaPagamento && (

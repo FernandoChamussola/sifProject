@@ -2,10 +2,10 @@
 
 // import Link from "next/link";
 // import { Ellipsis, LogOut } from "lucide-react";
-// import { usePathname } from "next/navigation";
+// import { usePathname, useRouter } from "next/navigation";
 
 // import { cn } from "@/lib/utils";
-// import { getMenuList } from "@/lib/menu-list";
+// import { useMenuList } from "@/lib/menu-list";
 // import { Button } from "@/components/ui/button";
 // import { ScrollArea } from "@/components/ui/scroll-area";
 // import { CollapseMenuButton } from "@/components/admin-panel/collapse-menu-button";
@@ -22,7 +22,15 @@
 
 // export function Menu({ isOpen }: MenuProps) {
 //   const pathname = usePathname();
-//   const menuList = getMenuList(pathname);
+//   const router = useRouter();
+//   const menuList = useMenuList();
+
+//   // Função de logout
+//   const handleLogout = () => {
+//     localStorage.removeItem("token");
+//     localStorage.removeItem("userData");
+//     router.push("/"); // redireciona para a página de login
+//   };
 
 //   return (
 //     <ScrollArea className="[&>div>div[style]]:!block">
@@ -118,7 +126,7 @@
 //               <Tooltip delayDuration={100}>
 //                 <TooltipTrigger asChild>
 //                   <Button
-//                     onClick={() => {}}
+//                     onClick={handleLogout} // aqui chamamos logout
 //                     variant="outline"
 //                     className="w-full justify-center h-10 mt-5"
 //                   >
@@ -156,7 +164,7 @@ import { Ellipsis, LogOut } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { getMenuList } from "@/lib/menu-list";
+import { useMenuList } from "@/lib/menu-list";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CollapseMenuButton } from "@/components/admin-panel/collapse-menu-button";
@@ -164,24 +172,35 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-  TooltipProvider
+  TooltipProvider,
 } from "@/components/ui/tooltip";
+import { useToast } from "@/components/ui/Toast";
 
 interface MenuProps {
   isOpen: boolean | undefined;
 }
 
 export function Menu({ isOpen }: MenuProps) {
+  const { showToast } = useToast();
   const pathname = usePathname();
   const router = useRouter();
-  const menuList = getMenuList(pathname);
+  const menuList = useMenuList(); // hook atualizado que espera token
 
   // Função de logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userData");
-    router.push("/"); // redireciona para a página de login
+    router.push("/"); // redireciona para login
   };
+  // showToast("info", "carregando!");
+
+  if (!menuList || menuList.length === 0) {
+    return (
+      <p className="text-center mt-10 text-gray-700 dark:text-gray-300">
+          {/* showToast("info", "Aguarde,Carregando Menu... "); */}
+      </p>
+    );
+  }
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
@@ -209,10 +228,11 @@ export function Menu({ isOpen }: MenuProps) {
               ) : (
                 <p className="pb-2"></p>
               )}
+
               {menus.map(
-                ({ href, label, icon: Icon, active, submenus }, index) =>
+                ({ href, label, icon: Icon, active, submenus }, idx) =>
                   !submenus || submenus.length === 0 ? (
-                    <div className="w-full" key={index}>
+                    <div className="w-full" key={idx}>
                       <TooltipProvider disableHoverableContent>
                         <Tooltip delayDuration={100}>
                           <TooltipTrigger asChild>
@@ -229,7 +249,9 @@ export function Menu({ isOpen }: MenuProps) {
                             >
                               <Link href={href}>
                                 <span
-                                  className={cn(isOpen === false ? "" : "mr-4")}
+                                  className={cn(
+                                    isOpen === false ? "" : "mr-4"
+                                  )}
                                 >
                                   <Icon size={18} />
                                 </span>
@@ -247,22 +269,18 @@ export function Menu({ isOpen }: MenuProps) {
                             </Button>
                           </TooltipTrigger>
                           {isOpen === false && (
-                            <TooltipContent side="right">
-                              {label}
-                            </TooltipContent>
+                            <TooltipContent side="right">{label}</TooltipContent>
                           )}
                         </Tooltip>
                       </TooltipProvider>
                     </div>
                   ) : (
-                    <div className="w-full" key={index}>
+                    <div className="w-full" key={idx}>
                       <CollapseMenuButton
                         icon={Icon}
                         label={label}
                         active={
-                          active === undefined
-                            ? pathname.startsWith(href)
-                            : active
+                          active === undefined ? pathname.startsWith(href) : active
                         }
                         submenus={submenus}
                         isOpen={isOpen}
@@ -272,12 +290,13 @@ export function Menu({ isOpen }: MenuProps) {
               )}
             </li>
           ))}
+
           <li className="w-full grow flex items-end">
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <Button
-                    onClick={handleLogout} // aqui chamamos logout
+                    onClick={handleLogout}
                     variant="outline"
                     className="w-full justify-center h-10 mt-5"
                   >

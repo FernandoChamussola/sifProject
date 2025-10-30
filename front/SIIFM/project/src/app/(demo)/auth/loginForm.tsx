@@ -5,12 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
 import api from "@/lib/api";
+import { useToast } from "@/components/ui/Toast";
 
 interface LoginFormProps {
   onLoginSuccess: (data: any) => void;
 }
 
 export function LoginForm({ onLoginSuccess }: LoginFormProps) {
+    const { showToast } = useToast();
   const [formData, setFormData] = useState({ email: "", senha: "" });
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
@@ -20,25 +22,52 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setErro(null);
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setErro(null);
 
-    try {
-      const { data } = await api.post("/auth/login", formData);
-      onLoginSuccess(data);
-    } catch (err: any) {
-      if (err.response && err.response.data) {
-        setErro(err.response.data.message );
-        console.log(err.response);
-      } else {
-        setErro(err.message );
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+  //   try {
+  //     const { data } = await api.post("/auth/login", formData);
+  //     onLoginSuccess(data);
+  //   } catch (err: any) {
+  //     if (err.response && err.response.data) {
+  //       setErro(err.response.data.message );
+  //       console.log(err.response);
+  //     } else {
+  //       setErro(err.message );
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+  setErro(null);
+
+  try {
+    const { data } = await api.post("/auth/login", formData);
+    onLoginSuccess(data);
+    // Login bem-sucedido
+    // showToast("success", "Login realizado com sucesso!");
+  } catch (err: any) {
+    let message = "Ocorreu um erro. Tente novamente.";
+
+    // if (err.response && err.response.data && err.response.data.message) {
+    //   // message = err.response.data.message;
+    // } else if (err.message) {
+    //   // message = err.message;
+    // }
+
+    // setErro(message);
+    showToast("error", "Usuario nao encontrado!"); // Dispara toast de erro
+    console.log(err.response || err);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md">
@@ -66,7 +95,7 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
         required
       />
 
-      <Button type="submit" disabled={loading} className="mt-2 bg-blue-600 hover:bg-blue-700 text-white">
+      <Button type="submit" disabled={loading}  className="mt-2 bg-blue-600 hover:bg-blue-700 text-white">
         {loading ? "Entrando..." : "Entrar"}
       </Button>
     </form>
