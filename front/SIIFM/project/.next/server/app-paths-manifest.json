@@ -1,8 +1,5 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/icon.ico/route": "app/icon.ico/route.js",
-  "/(demo)/dashboard/page": "app/(demo)/dashboard/page.js",
-  "/(demo)/pagamento/page": "app/(demo)/pagamento/page.js",
+  "/(demo)/account/page": "app/(demo)/account/page.js",
   "/(demo)/pagamentos/page": "app/(demo)/pagamentos/page.js",
-  "/(demo)/home/page": "app/(demo)/home/page.js"
+  "/(demo)/pagamento/page": "app/(demo)/pagamento/page.js"
 }

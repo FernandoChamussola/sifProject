@@ -30,9 +30,10 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
       onLoginSuccess(data);
     } catch (err: any) {
       if (err.response && err.response.data) {
-        setErro(err.response.data.message || "Senha ou email incorrecto");
+        setErro(err.response.data.message );
+        console.log(err.response);
       } else {
-        setErro(err.message || "Senha ou email incorrecto");
+        setErro(err.message );
       }
     } finally {
       setLoading(false);
